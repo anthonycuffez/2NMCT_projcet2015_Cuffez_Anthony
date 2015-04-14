@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">MobileAppProject2015</string>
+    <string name="app_name">Project2015MobileApp</string>
+    <string name="title_activity_maps">Map</string>
 </resources>
