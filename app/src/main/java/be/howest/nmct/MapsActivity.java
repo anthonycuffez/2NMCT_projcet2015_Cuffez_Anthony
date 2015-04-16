@@ -1,6 +1,11 @@
 package be.howest.nmct;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
@@ -25,6 +30,8 @@ import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -32,6 +39,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 
 public class MapsActivity extends FragmentActivity {
@@ -301,11 +309,38 @@ public class MapsActivity extends FragmentActivity {
         /*
             https://api.foursquare.com/v2/venues/search?client_id=SEXPMO5VHLZECD1RKAP0XSK33MOSWXWBKIAQ1WQIDSRD5XD2&client_secret=GDITNVWNFXYJXS1DVTVKY5KPJ53553ADOUGH3IEKE32QBUBJ&v=20130815&ll=50.849999999999990000,2.883333300000004000&query=bar,restaurant
         */
+        URL url1;
+        URL url2;
+        try{
+            url1 = new URL("https://maps.google.com/mapfiles/kml/shapes/dining.png");
+            Drawable drw1 = getResources().getDrawable(R.drawable.dining);
+            Bitmap bmpLarge1 = ((BitmapDrawable)drw1).getBitmap();
+            Matrix matrix1 = new Matrix();
+            matrix1.postScale((float)80/bmpLarge1.getWidth(), (float)80/bmpLarge1.getHeight());
+            Bitmap bmp1 = Bitmap.createBitmap(bmpLarge1, 0,0,bmpLarge1.getWidth(), bmpLarge1.getHeight(),matrix1,false);
 
-        int lengte = lats.size();
-        for(int i=0; i<lengte; i++){
-            mMap.addMarker(new MarkerOptions().position(new LatLng(lats.get(i),lngs.get(i))).title(names.get(i)).snippet("test"));
+            //
+            Drawable drw2 = getResources().getDrawable(R.drawable.coffee);
+            Bitmap bmpLarge2 = ((BitmapDrawable)drw2).getBitmap();
+            Matrix matrix2 = new Matrix();
+            matrix2.postScale((float)80/bmpLarge2.getWidth(), (float)80/bmpLarge2.getHeight());
+            Bitmap bmp2 = Bitmap.createBitmap(bmpLarge2, 0,0,bmpLarge2.getWidth(), bmpLarge2.getHeight(),matrix2,false);
+
+            int lengte = lats.size();
+            for(int i=0; i<lengte; i++){
+                if(omschrijvingen.get(i) == "Restaurant"){
+                    mMap.addMarker(new MarkerOptions().position(new LatLng(lats.get(i),lngs.get(i))).title(names.get(i)).snippet(omschrijvingen.get(i)).icon(BitmapDescriptorFactory.fromBitmap(bmp1)));
+                }
+                else if(omschrijvingen.get(i) == "Bar"){
+                    mMap.addMarker(new MarkerOptions().position(new LatLng(lats.get(i),lngs.get(i))).title(names.get(i)).snippet(omschrijvingen.get(i)).icon(BitmapDescriptorFactory.fromBitmap(bmp2)));
+                }
+            }
         }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+
+
 
         /*String clientId = "SEXPMO5VHLZECD1RKAP0XSK33MOSWXWBKIAQ1WQIDSRD5XD2";
         String clientSecret = "GDITNVWNFXYJXS1DVTVKY5KPJ53553ADOUGH3IEKE32QBUBJ";
