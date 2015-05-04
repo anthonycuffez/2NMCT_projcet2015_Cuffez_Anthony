@@ -76,6 +76,9 @@ public class MapsActivity extends FragmentActivity {
     }
 
     public void addData(){
+
+
+
         lats.add((float)50.85185992853622);
         lngs.add((float)2.8835191941471883);
         names.add("Gossip Illy bar");
