@@ -1,19 +1,14 @@
 package be.howest.nmct;
 
 import android.app.Activity;
-import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-
-import be.howest.nmct.CategoryFragment;
-import be.howest.nmct.R;
 
 
-public class CategoryActivity extends Activity {
+public class CategoryActivity extends Activity implements CategoryListFragment.OnCategoryListFragmentListener, CategoryDetailListFragment.OnCategoryDetailListFragmentListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,9 +16,7 @@ public class CategoryActivity extends Activity {
         setContentView(R.layout.activity_category);
 
         if(savedInstanceState == null){
-            getFragmentManager().beginTransaction()
-                    .add(R.id.container, new CategoryFragment())
-                    .commit();
+            getFragmentManager().beginTransaction().add(R.id.container, new CategoryListFragment()).commit();
         }
     }
 
@@ -54,15 +47,39 @@ public class CategoryActivity extends Activity {
         A placeholder fragment containing a simple view.
     */
 
-    public static class PlaceholderFragment extends Fragment {
-        public PlaceholderFragment(){
-
+    @Override
+    public void onBackPressed(){
+        if(getFragmentManager().getBackStackEntryCount() == 0){ //set to 1 to close the app
+            finish();
         }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
-            View rootView = inflater.inflate(R.layout.fragment_category, container, false);
-            return rootView;
+        else{
+            super.onBackPressed();
         }
+    }
+
+    @Override
+    public void onSelectCategory(String naam){
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+        CategoryDetailListFragment categoryDetailListFragment = CategoryDetailListFragment.newCategoryDetailListFragment(naam);
+
+        fragmentTransaction.replace(R.id.container, categoryDetailListFragment);
+        fragmentTransaction.addToBackStack("showCategoryDetailListFragment");
+
+        fragmentTransaction.commit();
+    }
+
+    @Override
+    public void onSelectPlace(String naam){
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+        CategoryDetailListFragment categoryDetailListFragment = CategoryDetailListFragment.newCategoryDetailListFragment(naam);
+
+        fragmentTransaction.replace(R.id.container, categoryDetailListFragment);
+        fragmentTransaction.addToBackStack("showCategoryDetailListFragment");
+
+        fragmentTransaction.commit();
     }
 }

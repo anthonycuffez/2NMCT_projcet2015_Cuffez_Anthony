@@ -10,7 +10,7 @@
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:src="@drawable/abc_ic_menu_copy_mtrl_am_alpha"
-        android:id="@+id/imageViewStudent" />
+        android:id="@+id/imageViewPlaceCategory" />
 
     <LinearLayout
         android:orientation="vertical"

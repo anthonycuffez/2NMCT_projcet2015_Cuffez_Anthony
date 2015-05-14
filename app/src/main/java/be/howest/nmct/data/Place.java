@@ -42,13 +42,16 @@ public class Place {
         String categorieString = "";
         switch(categorie){
             case 0:
-                categorieString = "restaurant";
+                categorieString = "Hotels";
                 break;
             case 1:
-                categorieString = "bar";
+                categorieString = "Vakantiewoningen";
                 break;
-            default:
-                categorieString = "onbekend";
+            case 2:
+                categorieString = "Activiteiten";
+                break;
+            case 3:
+                categorieString = "Restaurants";
                 break;
         }
         return ""+naamPlaats+" ("+categorieString+")";
