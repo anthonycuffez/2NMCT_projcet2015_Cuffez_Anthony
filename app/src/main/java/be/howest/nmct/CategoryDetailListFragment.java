@@ -9,11 +9,13 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
+import android.widget.TextView;
 
 import be.howest.nmct.Loader.ActiviteitenLoader;
 import be.howest.nmct.Loader.CategoriesLoader;
@@ -39,6 +41,7 @@ public class CategoryDetailListFragment extends ListFragment implements LoaderMa
             @Override
             public void bindView(View view, Context context, Cursor cursor) {
                 super.bindView(view, context, cursor);
+                TextView txtTitle = (TextView)view.findViewById(R.id.textViewSelecteer);
             }
     }
 
@@ -47,7 +50,7 @@ public class CategoryDetailListFragment extends ListFragment implements LoaderMa
     private CategoryDetailAdapter mAdapter;
     private OnCategoryDetailListFragmentListener onCategoryDetailListFragmentListener;
     public interface OnCategoryDetailListFragmentListener{
-        public void onSelectPlace(String naam);
+        public void onSelectPlace(String naam, double lat, double lng, String category);
     }
     public CategoryDetailListFragment() {
         // Required empty public constructor
@@ -79,7 +82,7 @@ public class CategoryDetailListFragment extends ListFragment implements LoaderMa
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_category, container, false);
+        View v = inflater.inflate(R.layout.fragment_category_detail_list, container, false);
         return v;
     }
 
@@ -89,22 +92,6 @@ public class CategoryDetailListFragment extends ListFragment implements LoaderMa
         /*String[] columns = new String[]{Contract.PlacesColumns.COLUMN_NAAMPLAATS, Contract.PlacesColumns.COLUMN_CATEGORIE, Contract.PlacesColumns.COLUMN_LAT, Contract.PlacesColumns.COLUMN_LNG};
         int[] viewIds = new int[]{R.id.textViewName, R.id.textViewFirstName, R.id.textViewEmail, R.id.textViewScoreResultaat};*/
         String[] columns = new String[]{Contract.PlacesColumns.COLUMN_NAAMPLAATS};
-       /* if(CategoryName == "Hotels"){
-            columns = new String[]{Contract.HotelsColumns.COLUMN_NAAMPLAATS};
-        }
-        else if(CategoryName == "Vakantiewoningen"){
-            columns = new String[]{Contract.VakantiewoningenColumns.COLUMN_NAAMPLAATS};
-        }
-        else if(CategoryName == "Activiteiten"){
-            columns = new String[]{Contract.ActiviteitenColumns.COLUMN_NAAMPLAATS};
-        }
-        else if(CategoryName == "Restaurants"){
-            columns = new String[]{Contract.RestaurantsColumns.COLUMN_NAAMPLAATS};
-        }
-        else{
-            //columns = new String[]{Contract.PlacesColumns.COLUMN_NAAMPLAATS};
-            columns = null;
-        }*/
 
         int[] viewIds = new int[]{R.id.textViewName};
 
@@ -148,8 +135,11 @@ public class CategoryDetailListFragment extends ListFragment implements LoaderMa
         super.onListItemClick(l, v, position, id);
         Cursor c = (Cursor) mAdapter.getItem(position);
         String selectedPlace = c.getString(c.getColumnIndex(Contract.PlacesColumns.COLUMN_NAAMPLAATS));
+        double lat = c.getDouble(c.getColumnIndex(Contract.PlacesColumns.COLUMN_LAT));
+        double lng = c.getDouble(c.getColumnIndex(Contract.PlacesColumns.COLUMN_LNG));
+        String category = c.getString(c.getColumnIndex(Contract.PlacesColumns.COLUMN_CATEGORIE));
         if(onCategoryDetailListFragmentListener != null){
-            onCategoryDetailListFragmentListener.onSelectPlace((selectedPlace));
+            onCategoryDetailListFragmentListener.onSelectPlace(selectedPlace, lat, lng, category);
         }
     }
 }

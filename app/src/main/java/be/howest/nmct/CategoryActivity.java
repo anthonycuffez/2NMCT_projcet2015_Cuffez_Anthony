@@ -36,9 +36,9 @@ public class CategoryActivity extends Activity implements CategoryListFragment.O
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        /*if (id == R.id.action_settings) {
             return true;
-        }
+        }*/
 
         return super.onOptionsItemSelected(item);
     }
@@ -71,14 +71,14 @@ public class CategoryActivity extends Activity implements CategoryListFragment.O
     }
 
     @Override
-    public void onSelectPlace(String naam){
+    public void onSelectPlace(String naam, double lat, double lng, String category){
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
-        CategoryDetailListFragment categoryDetailListFragment = CategoryDetailListFragment.newCategoryDetailListFragment(naam);
+        PlaceMapFragment placeMapFragment = PlaceMapFragment.newPlaceMapFragment(naam, lat, lng, category);
 
-        fragmentTransaction.replace(R.id.container, categoryDetailListFragment);
-        fragmentTransaction.addToBackStack("showCategoryDetailListFragment");
+        fragmentTransaction.replace(R.id.container, placeMapFragment);
+        fragmentTransaction.addToBackStack("showPlaceMapFragment");
 
         fragmentTransaction.commit();
     }

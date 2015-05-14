@@ -11,5 +11,6 @@
     <string name="email">Email</string>
     <string name="score">Score:</string>
     <string name="scoreresultaat">punten</string>
-    <string name="selecteereenstudent">Selecteer een categorie</string>
+    <string name="selecteereenstudent">Selecteer een categorie: </string>
+    <string name="selecteerPlaats">Selecteer een plaats: </string>
 </resources>

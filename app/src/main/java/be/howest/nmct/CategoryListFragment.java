@@ -6,12 +6,16 @@ import android.app.LoaderManager;
 import android.content.Context;
 import android.content.Loader;
 import android.database.Cursor;
+import android.graphics.drawable.Drawable;
+import android.media.Image;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import be.howest.nmct.Loader.CategoriesLoader;
@@ -31,6 +35,23 @@ public class CategoryListFragment extends ListFragment implements LoaderManager.
         @Override
         public void bindView(View view, Context context, Cursor cursor) {
             super.bindView(view, context, cursor);
+            ImageView imageViewIcon = (ImageView) view.findViewById(R.id.imageViewPlaceCategory);
+            int colnr = cursor.getColumnIndex(Contract.CategoryColumns.COLUMN_CATEGORIENAAM);
+            String naam = cursor.getString(colnr);
+            if(naam == "Hotels"){
+                //do something...
+                imageViewIcon.setImageResource(R.drawable.hotels);
+            }
+            else if(naam == "Vakantiewoningen"){
+                imageViewIcon.setImageResource(R.drawable.vakantiewoningen);
+            }
+            else if(naam == "Activiteiten"){
+                imageViewIcon.setImageResource(R.drawable.activiteiten);
+            }
+            else if(naam == "Restaurants"){
+                imageViewIcon.setImageResource(R.drawable.restaurants);
+            }
+            //imageViewIcon.setImageResource(R.drawable);
         }
     }
 
@@ -73,6 +94,7 @@ public class CategoryListFragment extends ListFragment implements LoaderManager.
         int[] viewIds = new int[]{R.id.textViewName, R.id.textViewFirstName, R.id.textViewEmail, R.id.textViewScoreResultaat};*/
         String[] columns = new String[]{Contract.CategoryColumns.COLUMN_CATEGORIENAAM};
         int[] viewIds = new int[]{R.id.textViewName};
+
 
         mAdapter = new CategoryAdapter(getActivity(), R.layout.row_category, null, columns, viewIds, 0);
         setListAdapter(mAdapter);
